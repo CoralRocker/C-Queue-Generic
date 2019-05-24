@@ -2,11 +2,16 @@
 #include <stdlib.h>
 #include <string.h>
 
+/* Struct to hold the Queue */
 typedef struct Queue {
 	void** arr;
 	int size;
 }Queue;
 
+/* Initializes a Queue object so that all information stored therein is either NULL or zero.
+ * Uses malloc to allocate memory for the Queue, so the freeQueue method be used to prevent memory
+ * leaks.
+ */
 Queue* initQueue()
 {
 	Queue *q = malloc(sizeof(Queue));
@@ -15,12 +20,16 @@ Queue* initQueue()
 	return q;
 }
 
+/* Free the Queue array and Queue itself.
+ */
 void freeQueue(Queue *q)
 {
 	free(q->arr);
 	free(q);
 }
 
+/* Return the element in the front of the queue. (index 0)
+ */
 void* frontQueue(Queue *q)
 {
 	if(q->size > 0)
@@ -28,6 +37,8 @@ void* frontQueue(Queue *q)
 	return 0;
 }
 
+/* Return the last element in the queue. (index size-1)
+ */
 void* backQueue(Queue *q)
 {
 	if(q->size > 0)
@@ -35,6 +46,8 @@ void* backQueue(Queue *q)
 	return 0;
 }
 
+/* Adds an element to the back of the queue
+ */
 void pushQueue(Queue *q, void* val)
 {
 	void** tmp = malloc(sizeof(void*)*q->size);
@@ -47,6 +60,9 @@ void pushQueue(Queue *q, void* val)
 	q->arr[q->size-1] = val;
 }
 
+/* Removes first element in queue.
+ * WARNING: REMOVES FIRST ELEMENT, INSTEAD OF BACK ELEMENT!
+ */
 void popQueue(Queue *q)
 {
 	q->size--;
@@ -58,11 +74,12 @@ void popQueue(Queue *q)
 	free(tmp);
 }
 
-void copyQueue(Queue *q1, Queue *q2)
+/* Copies the data from one Queue to another.
+ */
+void copyQueue(Queue *src, Queue *dst)
 {
-	free(q2->arr);
-	q2->arr = (void**)malloc(sizeof(void*)*q1->size);
-	memcpy(q2->arr, q1->arr, sizeof(void*)*q1->size);
-	q2->size = q1->size;
-
+	free(dst->arr);
+	dst->arr = (void**)malloc(sizeof(void*)*src->size);
+	memcpy(dst->arr, src->arr, sizeof(void*)*src->size);
+	dst->size = src->size;
 }
